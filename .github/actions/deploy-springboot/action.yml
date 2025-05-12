@@ -1,0 +1,29 @@
+name: Deploy Spring Boot to EC2
+description: SSH into EC2, transfer .jar and run it using systemd
+inputs:
+  host:
+    description: "EC2 public IP or hostname"
+    required: true
+  username:
+    description: "EC2 SSH username"
+    required: true
+  key:
+    description: "Private SSH key"
+    required: true
+  jar_path:
+    description: "Path to the .jar file to deploy"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup SSH Key
+      shell: bash
+      run: |
+        echo "${{ inputs.key }}" > key.pem
+        chmod 600 key.pem
+
+    - name: Run Deployment Script
+      shell: bash
+      run: |
+        bash ${{ github.action_path }}/scripts/deploy.sh ${{ inputs.host }} ${{ inputs.username }} key.pem ${{ inputs.jar_path }}
