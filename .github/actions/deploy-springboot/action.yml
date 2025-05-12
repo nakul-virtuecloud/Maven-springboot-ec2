@@ -11,7 +11,7 @@ inputs:
     description: "Private SSH key"
     required: true
   jar_path:
-    description: "Path to the .jar file to deploy "
+    description: "Path to the .jar file to deploy"
     required: true
 
 runs:
